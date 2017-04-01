@@ -25,11 +25,10 @@ class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        camera = transform.GetChild(0).GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         //For translation
         float horzMove = Input.GetAxis("Horizontal");
