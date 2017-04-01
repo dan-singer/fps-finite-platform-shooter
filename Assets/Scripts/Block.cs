@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Block : MonoBehaviour {
 
-    /// <summary>
-    /// How many blocks you can place
-    /// </summary>
-    public int Quantity; 
-
 	// Use this for initialization
 	void Start () {
 		
@@ -18,4 +13,23 @@ public class Block : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    /// <summary>
+    /// What should happen when steps on this block?
+    /// </summary>
+    public virtual void CollideAction(Player player)
+    {
+
+    }
+
+    /// <summary>
+    /// What should happen when player leaves this block?
+    /// </summary>
+    /// <param name="player"></param>
+    public virtual void CollideExitAction(Player player)
+    {
+
+    }
+
+
 }

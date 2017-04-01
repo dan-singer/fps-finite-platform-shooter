@@ -6,9 +6,8 @@ using UnityEngine.UI;
 /// <summary>
 /// The main Player class
 /// </summary>
-class Player : MonoBehaviour
+public class Player : MonoBehaviour
 {
-
 
 
     //Gravitational Acceleration
@@ -32,9 +31,11 @@ class Player : MonoBehaviour
     private Transform BlockPlacer;
 
     //Actual Vector used for movement
-    private Vector3 velocity;
-    private Vector3 rotation;
-    private Vector3 acceleration;
+    public Vector3 velocity;
+    [HideInInspector]
+    public Vector3 rotation;
+    [HideInInspector]
+    public Vector3 acceleration;
 
     //Mouse stuff
     private float rotationX = 0, rotationY = 0;
@@ -52,6 +53,8 @@ class Player : MonoBehaviour
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
         BlockPlacer = transform.GetChild(1);
+        UpdatePlaceBlock();
+
     }
 
     /// <summary>
@@ -105,8 +108,9 @@ class Player : MonoBehaviour
         velocity.y += Gravity * Time.deltaTime;
 
         //Actually move and stuff
-        controller.Move(velocity);
+        controller.Move(velocity);  
     }
+    
 
     /// <summary>
     /// Logic for placing blocks
@@ -119,10 +123,77 @@ class Player : MonoBehaviour
          Switch block with Q and E
          */
 
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        //Switch Blocks
+        if (Input.GetButtonDown("Next"))
+            curBlockIndex++;
+        if (Input.GetButtonDown("Prev"))
+            curBlockIndex--;
+
+        if (curBlockIndex >= AvailableBlocks.Length)
+            curBlockIndex = 0;
+        if (curBlockIndex < 0)
+            curBlockIndex = AvailableBlocks.Length - 1;
+
+
+
+        if (Input.GetButtonDown("Next") || Input.GetButtonDown("Prev"))
+        {
+            UpdatePlaceBlock();
+        }
+
+        //Modify BlockPlacer height
+        BlockPlacer.transform.position = new Vector3(BlockPlacer.position.x, BlockPlacer.position.y + scroll, BlockPlacer.position.z);
+
+
+
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
+            LevelManager l = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+
+            if (l.BlockQuantities[curBlockIndex] > 0)
+            {
+                Block b = Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
+                l.BlockQuantities[curBlockIndex]--;
+
+            }
+
+
         }
+
+
+
+        }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        //Discard collisions with self
+        if (other.name == name)
+            return;
+        if (other.GetComponent<Block>())
+        {
+            other.GetComponent<Block>().CollideAction(this);
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        //Discard collisions with self
+        if (other.name == name)
+            return;
+        if (other.GetComponent<Block>())
+        {
+            other.GetComponent<Block>().CollideExitAction(this);
+        }
+    }
+
+    private void UpdatePlaceBlock()
+    {
+        //Assign appropriate material and mesh
+        BlockPlacer.GetComponent<Renderer>().sharedMaterial = AvailableBlocks[curBlockIndex].GetComponent<Renderer>().sharedMaterial;
+        BlockPlacer.GetComponent<MeshFilter>().sharedMesh = AvailableBlocks[curBlockIndex].GetComponent<MeshFilter>().sharedMesh;
     }
 
     private void Update()
