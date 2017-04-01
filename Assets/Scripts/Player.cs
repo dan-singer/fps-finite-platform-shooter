@@ -51,7 +51,7 @@ class Player : MonoBehaviour
         origRotation = transform.localRotation;
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
-        BlockPlacer = camera.transform.GetChild(0);
+        BlockPlacer = transform.GetChild(1);
     }
 
     /// <summary>
