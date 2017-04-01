@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public enum PlayerState
+{
+    Controllable,
+    NotControllable,
+    Frozen
+}
+
 /// <summary>
 /// The main Player class
 /// </summary>
@@ -44,6 +52,23 @@ public class Player : MonoBehaviour
     //What block to place
     private int curBlockIndex = 0;
 
+    //Speed on Start of level
+    private float originalSpeed;
+    //Are we boosting right now? 
+    public bool IsBoosting = false;
+
+    public float friction;
+    private float originalFriction;
+
+    public Vector3 StartPosition;
+
+    public PlayerState State = PlayerState.Controllable;
+
+    private List<GameObject> playerPlacedObjects;
+
+    /// <summary>
+    /// Initialization
+    /// </summary>
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -53,14 +78,35 @@ public class Player : MonoBehaviour
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
         BlockPlacer = transform.GetChild(1);
+        originalSpeed = MoveSpeed;
+        originalFriction = friction;
         UpdatePlaceBlock();
+        playerPlacedObjects = new List<GameObject>();
 
+        //Set Start Position
+        if (StartPosition == Vector3.zero)
+        {
+            StartPosition = transform.position;
+        }
+
+    }
+
+    /// <summary>
+    /// Remove all objects that this Player placed.
+    /// </summary>
+    public void RemovePlacedObjects()
+    {
+        foreach (GameObject g in playerPlacedObjects)
+        {
+            Destroy(g);
+        }
     }
 
     /// <summary>
     /// Movement and Jumping
     /// </summary>
-    private void Movement()
+    /// <param name="withInput">Consider player input</param>
+    private void Movement(bool withInput)
     {
         //For translation
         float horzMove = Input.GetAxis("Horizontal");
@@ -70,6 +116,13 @@ public class Player : MonoBehaviour
         float camX = Input.GetAxis("Mouse X");
         float camY = Input.GetAxis("Mouse Y");
 
+
+        //Lock controls if necessary
+        if (State == PlayerState.NotControllable)
+        {
+            horzMove = 0;
+            vertMove = 0;
+        }
 
         //Movement
         Vector3 oldVel = velocity;
@@ -107,6 +160,9 @@ public class Player : MonoBehaviour
         //Gravitational Acceleration
         velocity.y += Gravity * Time.deltaTime;
 
+        float tempY = velocity.y;
+        velocity = Vector3.Lerp(oldVel, velocity, Time.deltaTime * friction);
+        velocity.y = tempY;
         //Actually move and stuff
         controller.Move(velocity);  
     }
@@ -155,11 +211,10 @@ public class Player : MonoBehaviour
             if (l.BlockQuantities[curBlockIndex] > 0)
             {
                 Block b = Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
+                playerPlacedObjects.Add(b.gameObject); //Keep track of placed objects
                 l.BlockQuantities[curBlockIndex]--;
 
             }
-
-
         }
 
 
@@ -171,9 +226,21 @@ public class Player : MonoBehaviour
         //Discard collisions with self
         if (other.name == name)
             return;
+        //Polymorphism to the rescue for CollideActions
         if (other.GetComponent<Block>())
         {
             other.GetComponent<Block>().CollideAction(this);
+        }
+
+        //When we step on anything that's not a boost block, reset speed to original value
+        if (other.GetComponent<BoostBlock>() == null)
+        {
+            MoveSpeed = originalSpeed;
+        }
+        //When we step on anything that's not an ice block, reset friction to original value
+        if (other.GetComponent<IceBlock>() == null)
+        {
+            friction = originalFriction;
         }
     }
 
@@ -189,19 +256,31 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the placed blocks matierla, mesh, scale, and rotation
+    /// </summary>
     private void UpdatePlaceBlock()
     {
-        //Assign appropriate material and mesh
         BlockPlacer.GetComponent<Renderer>().sharedMaterial = AvailableBlocks[curBlockIndex].GetComponent<Renderer>().sharedMaterial;
         BlockPlacer.GetComponent<MeshFilter>().sharedMesh = AvailableBlocks[curBlockIndex].GetComponent<MeshFilter>().sharedMesh;
+        BlockPlacer.transform.localScale = AvailableBlocks[curBlockIndex].transform.localScale;
+        BlockPlacer.transform.rotation = AvailableBlocks[curBlockIndex].transform.rotation;
     }
 
     private void Update()
     {
-        Movement();
-        BlockPlacement();
-
-
+        switch (State)
+        {
+            case PlayerState.Controllable:
+                Movement(true);
+                BlockPlacement();
+                break;
+            case PlayerState.NotControllable:
+                Movement(false); 
+                break;
+            case PlayerState.Frozen:
+                break;
+        }
     }
 
     /// <summary>
