@@ -19,13 +19,17 @@ class Player : MonoBehaviour
     public float MoveSpeed;
     public float RotationSpeed;
 
-
+    //Clamping Angles
     public float MaxRotationAngle, MinRotationAngle;
 
 
+    //List of available blocks that can be placed
+    public GameObject[] AvailableBlocks;
 
+    //Component references
     private CharacterController controller;
     private Camera camera;
+    private Transform BlockPlacer;
 
     //Actual Vector used for movement
     private Vector3 velocity;
@@ -36,6 +40,9 @@ class Player : MonoBehaviour
     private float rotationX = 0, rotationY = 0;
     private Quaternion origRotation;
 
+    //What block to place
+    private int curBlockIndex = 0;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -44,9 +51,13 @@ class Player : MonoBehaviour
         origRotation = transform.localRotation;
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
+        BlockPlacer = transform.GetChild(1).transform;
     }
 
-    void Update()
+    /// <summary>
+    /// Movement and Jumping
+    /// </summary>
+    private void Movement()
     {
         //For translation
         float horzMove = Input.GetAxis("Horizontal");
@@ -95,6 +106,24 @@ class Player : MonoBehaviour
 
         //Actually move and stuff
         controller.Move(velocity);
+    }
+
+    /// <summary>
+    /// Logic for placing blocks
+    /// </summary>
+    private void BlockPlacement()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Instantiate<GameObject>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
+        }
+    }
+
+    private void Update()
+    {
+        Movement();
+        BlockPlacement();
+
 
     }
 
