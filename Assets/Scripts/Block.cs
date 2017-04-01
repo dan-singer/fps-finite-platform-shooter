@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Block : MonoBehaviour {
 
+    /// <summary>
+    /// How many blocks you can place
+    /// </summary>
+    public int Quantity; 
+
 	// Use this for initialization
 	void Start () {
 		

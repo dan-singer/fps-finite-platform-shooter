@@ -24,7 +24,7 @@ class Player : MonoBehaviour
 
 
     //List of available blocks that can be placed
-    public GameObject[] AvailableBlocks;
+    public Block[] AvailableBlocks;
 
     //Component references
     private CharacterController controller;
@@ -51,7 +51,7 @@ class Player : MonoBehaviour
         origRotation = transform.localRotation;
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
-        BlockPlacer = transform.GetChild(1).transform;
+        BlockPlacer = camera.transform.GetChild(0);
     }
 
     /// <summary>
@@ -113,9 +113,15 @@ class Player : MonoBehaviour
     /// </summary>
     private void BlockPlacement()
     {
+        /*
+         *Left click to drop block 
+         Scroll wheel changes y position
+         Switch block with Q and E
+         */
+
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate<GameObject>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
+            Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
         }
     }
 
