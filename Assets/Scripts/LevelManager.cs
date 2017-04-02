@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 /// <summary>
 /// Manages the level....what else do you want from me
 /// </summary>
@@ -11,6 +12,12 @@ public class LevelManager : MonoBehaviour {
     public Color DeathCamColor;
     public Color VictoryLightColor;
     public Color VictoryCamColor;
+
+    /// <summary>
+    /// Called on level completion
+    /// The int is the level index
+    /// </summary>
+    public event Action<int> CompleteLevelEvent;
 
     private Color normalLightColor;
     private Color normalCamColor;
@@ -25,8 +32,30 @@ public class LevelManager : MonoBehaviour {
     //quantities at the start
     private int[] originalQuantities; 
 
-
     private Player player;
+
+    /// <summary>
+    /// Total number of blocks left
+    /// </summary>
+    public int BlocksLeft
+    {
+        get
+        {
+            int total = 0;
+            foreach (int i in BlockQuantities)
+            {
+                total += i;
+            }
+            return total;
+        }
+    }
+
+
+    /// <summary>
+    /// Total number of blocks in the level
+    /// </summary>
+    public int TotalBlocks { get; private set; }
+
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +66,7 @@ public class LevelManager : MonoBehaviour {
         originalQuantities = new int[BlockQuantities.Length];
         //Store original quantity values so they can be reset later
         BlockQuantities.CopyTo(originalQuantities, 0);
+        TotalBlocks = BlocksLeft; 
         
 
         //Exit if they don't match
@@ -70,6 +100,7 @@ public class LevelManager : MonoBehaviour {
     /// </summary>
     public void CompleteLevel()
     {
+        CompleteLevelEvent(SceneManager.GetActiveScene().buildIndex-1);
         RenderSettings.ambientSkyColor = VictoryLightColor;
         Camera.main.backgroundColor = VictoryCamColor;
         player.State = PlayerState.Frozen;

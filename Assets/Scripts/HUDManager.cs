@@ -6,7 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour {
 
-    private int score;
+    private float score;
+    public string Score
+    {
+        get
+        {
+            return string.Format("{0:0}%", score);
+        }
+    }
 
     public Text scoreText;
 
@@ -16,7 +23,28 @@ public class HUDManager : MonoBehaviour {
 
     public Text controls;
 
-    Player p;
+    private Player player;
+    private LevelManager levelManager;
+    private int totalBlocks;
+
+    /// <summary>
+    /// Scores for each percentage
+    /// </summary>
+    public static List<float> Scores = new List<float>();
+
+    /// <summary>
+    /// Get the last saved score. 0 if none
+    /// </summary>
+    private float PreviousScore {
+        get
+        {
+            if (Scores.Count == 0)
+                return 0;
+            else
+                return Scores[Scores.Count - 1];
+        }
+    }
+   
 
 	// Use this for initialization
 	void Start () {
@@ -28,17 +56,21 @@ public class HUDManager : MonoBehaviour {
         if (c)
             controls = GameObject.Find("ControlsText").GetComponent<Text>();
 
-        p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 
-        score = 0;
+        totalBlocks = levelManager.TotalBlocks;
+        UpdateScore();
+        levelManager.CompleteLevelEvent += OnClearLevel;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        scoreText.text = "Score: " + score;
+        UpdateScore();
+        scoreText.text = "Respect: " + Score;
 
-        blockType.text = p.BlocksRemaining+ " " + p.CurrentBlock;
+        blockType.text = player.BlocksRemaining+ " " + player.CurrentBlock;
 
         if (controls)
         {
@@ -49,4 +81,29 @@ public class HUDManager : MonoBehaviour {
         }
 
     }
+
+    private void UpdateScore()
+    {
+        score = (((float)levelManager.BlocksLeft / totalBlocks) * 100.0f) + PreviousScore;
+    }
+
+    private void OnClearLevel(int level)
+    {
+        //If there's no score for this level
+        if (Scores.Count == level)
+        {
+            Scores.Add(score);
+        }
+        else
+        {
+            float oldScore = Scores[level];
+            if (score > oldScore)
+                Scores[level] = score;
+        }
+
+    }
+
+    
+
+    
 }
