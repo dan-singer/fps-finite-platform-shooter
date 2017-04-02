@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour {
 
@@ -22,7 +23,10 @@ public class HUDManager : MonoBehaviour {
 
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         blockType = GameObject.Find("BlockType").GetComponent<Text>();
-        controls = GameObject.Find("ControlsText").GetComponent<Text>();
+
+        GameObject c = GameObject.Find("ControlsText");
+        if (c)
+            controls = GameObject.Find("ControlsText").GetComponent<Text>();
 
         p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
@@ -36,7 +40,13 @@ public class HUDManager : MonoBehaviour {
 
         blockType.text = p.BlocksRemaining+ " " + p.CurrentBlock;
 
-        controls.text = "Press Q or E to switch between blocks.\nUse the scroll wheel to change elevation of blocks.";
+        if (controls)
+        {
+            if (SceneManager.GetActiveScene().name == "Level1")
+                controls.text = "WASD to move. Space to Jump. Left click to place Block.";
+            else
+                controls.text = "Press Q or E to switch between blocks.\nUse the scroll wheel to change elevation of blocks.";
+        }
 
-	}
+    }
 }

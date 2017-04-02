@@ -36,6 +36,7 @@ public class AudioManager : MonoBehaviour {
                 }
 
             }
+            DontDestroyOnLoad(instance.gameObject);
             return instance;
         }
     }
@@ -43,6 +44,8 @@ public class AudioManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        if (!Instance.GetComponent<AudioSource>().isPlaying)
+            Instance.GetComponent<AudioSource>().Play();
 	}
 	
 	// Update is called once per frame

@@ -1,25 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Moves, rotates, or scales objects 
+/// Plus some other stuff
 /// </summary>
 public class Mover : MonoBehaviour {
 
+    public Color startColor = Color.white;
     public Vector3 Velocity;
     public Vector3 RotationalVelocity;
     public Vector3 MaxScale;
 
-    public float MinX, MaxX, MinY, MaxY;
-
     public bool generateRandomValues = true;
-
-    private Vector3 startScale;
+    public bool loadlevelOnPressed = true;
+    private bool pressed = false;
+    private float t = 0;
 	// Use this for initialization
 	void Start () {
-        startScale = transform.localScale;
-
+        GetComponent<Renderer>().sharedMaterial.color = startColor;
         if (generateRandomValues)
         {
             System.Random r = new System.Random();
@@ -38,20 +39,41 @@ public class Mover : MonoBehaviour {
         transform.Rotate(RotationalVelocity * Time.deltaTime);
         transform.localScale = new Vector3(Mathf.PingPong(Time.time, MaxScale.x), Mathf.PingPong(Time.time, MaxScale.y), Mathf.PingPong(Time.time, MaxScale.z));
 
-        //Keep in view
+        //Keep in viewport -- sort of works
         Vector3 viewport = Camera.main.WorldToViewportPoint(transform.position);
         if (viewport.x > 1 || viewport.x < 0)
             Velocity.x *= -1;
         if (viewport.y < 0 || viewport.y > 1)
             Velocity.y *= -1;
 
-
+        //Lock Z position
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-        //viewport.y = Mathf.Clamp01(viewport.y);
+
+        if (pressed) //Start fading out
+        {
+            t += Time.deltaTime;
+
+            Material m = GetComponent<Renderer>().sharedMaterial;
+            m.color = Color.Lerp(Color.white, new Color(0, 0, 0, 0), t);
+
+            if (t >= 1)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         Velocity *= -1;
+    }
+
+    void OnMouseDown()
+    {
+        if (!pressed && loadlevelOnPressed)
+        {
+            pressed = true;
+            t = 0;
+        }
     }
 }

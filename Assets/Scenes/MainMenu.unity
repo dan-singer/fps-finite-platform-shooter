@@ -205,7 +205,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 3c447349de5a34d49b78e53b83c6167d, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
@@ -649,14 +649,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23431dd5ee7d07742a63131a834d0279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startColor: {r: 1, g: 1, b: 1, a: 1}
   Velocity: {x: 0, y: 0, z: 0}
   RotationalVelocity: {x: 50, y: 0, z: 0}
   MaxScale: {x: 6, y: 4, z: 6}
-  MinX: 0
-  MaxX: 0
-  MinY: 0
-  MaxY: 0
   generateRandomValues: 0
+  loadlevelOnPressed: 1
 --- !u!1 &1553039438
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,6 +765,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 23751274648267284, guid: 6cd27118989432548826d6e5e6991d57,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: efe69567639c2234487422b15f3b9f8b, type: 2}
     m_RemovedComponents:
     - {fileID: 114129062522922812, guid: 6cd27118989432548826d6e5e6991d57, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 6cd27118989432548826d6e5e6991d57, type: 2}
