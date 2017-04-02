@@ -77,14 +77,20 @@ public class Player : MonoBehaviour
         get
         {
             Block b = AvailableBlocks[curBlockIndex];
-            if (b is Block)
-                return "Block";
-            else if (b is BoostBlock)
+            if (b is BoostBlock)
                 return "Boost Block";
-            else if (b is FanBlock)
-                return "Fan Block";
             else if (b is JumpBlock)
                 return "Jump Block";
+            else if (b is Block)
+                if (b.transform.childCount == 0)
+                    return "Block";
+                else if (b.transform.childCount == 2)
+                    if (b.transform.GetChild(1).GetComponent<Block>() is FanBlock)
+                        return "Fan Block";
+                    else
+                        return "Block";
+                else
+                    return "Block";
             else
                 return "???";
         }

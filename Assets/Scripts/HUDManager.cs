@@ -29,6 +29,6 @@ public class HUDManager : MonoBehaviour {
 
         scoreText.text = "Score: " + score;
 
-        blockType.text = "Block type: " + p.CurrentBlock;
+        blockType.text = p.CurrentBlock;
 	}
 }
