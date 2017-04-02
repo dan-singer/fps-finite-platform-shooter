@@ -49,11 +49,12 @@ public class HUDManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
-        blockType = GameObject.Find("BlockType").GetComponent<Text>();
+        if (GameObject.Find("ScoreText"))
+            scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+        if (GameObject.Find("BlockType"))
+            blockType = GameObject.Find("BlockType").GetComponent<Text>();
 
-        GameObject c = GameObject.Find("ControlsText");
-        if (c)
+        if (GameObject.Find("ControlsText"))
             controls = GameObject.Find("ControlsText").GetComponent<Text>();
 
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
@@ -63,14 +64,14 @@ public class HUDManager : MonoBehaviour {
         UpdateScore();
         levelManager.CompleteLevelEvent += OnClearLevel;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
 
         UpdateScore();
-        scoreText.text = "Respect: " + Score;
 
-        blockType.text = player.BlocksRemaining+ " " + player.CurrentBlock;
+        if (blockType)
+            blockType.text = player.BlocksRemaining + " " + player.CurrentBlock;
 
         if (controls)
         {
@@ -79,6 +80,21 @@ public class HUDManager : MonoBehaviour {
             else
                 controls.text = "Press Q or E to switch between blocks.\nUse the scroll wheel to change elevation of blocks.";
         }
+
+        if (scoreText)
+        {
+            if (SceneManager.GetActiveScene().name == "Credits")
+            {
+                scoreText.text = "Final Respect: " + Score;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                scoreText.text = "Respect: " + Score;
+            }
+        }
+
+
 
     }
 
@@ -101,6 +117,11 @@ public class HUDManager : MonoBehaviour {
                 Scores[level] = score;
         }
 
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     
