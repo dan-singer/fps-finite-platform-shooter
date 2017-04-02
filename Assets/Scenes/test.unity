@@ -272,6 +272,36 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224056085801689808, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224767687435182938, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114005443756760714, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114426694282507774, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114005443756760714, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114426694282507774, guid: 0fefcba7053a28b46a820dbab9f0a196,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0fefcba7053a28b46a820dbab9f0a196, type: 2}
   m_IsPrefabParent: 0

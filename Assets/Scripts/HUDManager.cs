@@ -11,6 +11,8 @@ public class HUDManager : MonoBehaviour {
 
     public Text blockType;
 
+    public Text blockNum;
+
     Player p;
 
 	// Use this for initialization
@@ -18,7 +20,7 @@ public class HUDManager : MonoBehaviour {
 
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         blockType = GameObject.Find("BlockType").GetComponent<Text>();
-
+        
         p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         score = 0;
@@ -29,6 +31,7 @@ public class HUDManager : MonoBehaviour {
 
         scoreText.text = "Score: " + score;
 
-        blockType.text = p.CurrentBlock;
+        blockType.text = p.BlocksRemaining+ " " + p.CurrentBlock;
+        
 	}
 }
