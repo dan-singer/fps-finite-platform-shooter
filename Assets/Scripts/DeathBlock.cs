@@ -18,7 +18,8 @@ public class DeathBlock : Block {
 
     public override void CollideAction(Player player)
     {
-        animator.SetTrigger("Activate");
+        if (animator)
+            animator.SetTrigger("Activate");
         GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>().Respawn();
 
     }

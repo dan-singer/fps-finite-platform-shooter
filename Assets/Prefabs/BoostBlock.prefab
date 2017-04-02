@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4919483042935584}
   - component: {fileID: 33819857760205532}
-  - component: {fileID: 65290096592623576}
   - component: {fileID: 23000186848350488}
   - component: {fileID: 114770070046916210}
+  - component: {fileID: 65290096592623576}
   m_Layer: 0
   m_Name: BoostBlock
   m_TagString: Untagged
@@ -36,8 +36,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1144958281664368}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.2695713, y: 0.77, z: -7.5461464}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.84, y: 0.95, z: -11.41}
   m_LocalScale: {x: 5, y: -0.5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 64be370311b42fe428499aecebbd0a70, type: 2}
+  - {fileID: 2100000, guid: ffb33a6cba2afb54a831deb74ebe356c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_SelectedEditorRenderState: 3
@@ -80,7 +80,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1144958281664368}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 106a3f94c1f617043ac9c781c87ed23e, type: 3}
 --- !u!65 &65290096592623576
 BoxCollider:
   m_ObjectHideFlags: 1

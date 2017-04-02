@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour {
     private Color normalCamColor;
 
 
+
     /// <summary>
     /// List of quantites to be applied to all Blocks in player's inventory. 
     /// The Length MUST equal the length of the Player's inventory.
@@ -87,6 +88,7 @@ public class LevelManager : MonoBehaviour {
         //Reset Player
         player.RemovePlacedObjects();
         player.transform.position = player.StartPosition;
+        player.transform.rotation = player.StartRotation;
         player.State = PlayerState.Controllable;
 
     }

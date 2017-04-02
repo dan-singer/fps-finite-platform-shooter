@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
 
     //Mouse stuff
     private float rotationX = 0, rotationY = 0;
-    private Quaternion origRotation;
 
     //What block to place
     private int curBlockIndex = 0;
@@ -61,6 +60,7 @@ public class Player : MonoBehaviour
     private float originalFriction;
 
     public Vector3 StartPosition;
+    public Quaternion StartRotation;
 
     public PlayerState State = PlayerState.Controllable;
 
@@ -68,6 +68,38 @@ public class Player : MonoBehaviour
 
     private LevelManager levelManager;
     public Color transparentColor;
+
+    /// <summary>
+    /// Access the current block
+    /// </summary>
+    public string CurrentBlock
+    {
+        get
+        {
+            Block b = AvailableBlocks[curBlockIndex];
+            if (b is Block)
+                return "Block";
+            else if (b is BoostBlock)
+                return "Boost Block";
+            else if (b is FanBlock)
+                return "Fan Block";
+            else if (b is JumpBlock)
+                return "Jump Block";
+            else
+                return "???";
+        }
+    }
+
+    /// <summary>
+    /// Get the amount of blocks remaining for the current block type
+    /// </summary>
+    public int BlocksRemaining
+    {
+        get
+        {
+            return levelManager.BlockQuantities[curBlockIndex];
+        }
+    }
     /// <summary>
     /// Initialization
     /// </summary>
@@ -76,7 +108,6 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         acceleration = Vector3.zero;
-        origRotation = transform.localRotation;
         velocity = Vector3.zero;
         camera = transform.GetChild(0).GetComponent<Camera>();
         BlockPlacer = transform.GetChild(1);
@@ -86,11 +117,12 @@ public class Player : MonoBehaviour
         playerPlacedObjects = new List<GameObject>();
         levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 
-        //Set Start Position
+        //Set Start Position and rotation
         if (StartPosition == Vector3.zero)
         {
             StartPosition = transform.position;
         }
+        StartRotation = transform.localRotation;
 
     }
 
@@ -148,8 +180,8 @@ public class Player : MonoBehaviour
         Quaternion yQuat = Quaternion.AngleAxis(-rotationY, Vector3.right);
 
         //Construct new rotation
-        transform.localRotation = origRotation * xQuat;
-        camera.transform.localRotation = origRotation * yQuat;
+        transform.localRotation = StartRotation * xQuat;
+        camera.transform.localRotation = StartRotation * yQuat;
 
         //Jumping
         if (controller.isGrounded)
@@ -159,10 +191,12 @@ public class Player : MonoBehaviour
                 velocity.y = JumpYVelocity * Time.deltaTime;
             }
         }
-
-        //Gravitational Acceleration
-        velocity.y += Gravity * Time.deltaTime;
-
+        if (!controller.isGrounded)
+        {
+            //Gravitational Acceleration
+            velocity.y += Gravity * Time.deltaTime;
+        }
+        //For ice movement, lower friction
         float tempY = velocity.y;
         velocity = Vector3.Lerp(oldVel, velocity, Time.deltaTime * friction);
         velocity.y = tempY;
