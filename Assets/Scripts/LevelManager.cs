@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 /// <summary>
 /// Manages the level....what else do you want from me
 /// </summary>
@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour {
 
     public Color DeathLightColor;
     public Color DeathCamColor;
+    public Color VictoryLightColor;
+    public Color VictoryCamColor;
 
     private Color normalLightColor;
     private Color normalCamColor;
@@ -19,7 +21,7 @@ public class LevelManager : MonoBehaviour {
     /// The Length MUST equal the length of the Player's inventory.
     /// </summary>
     public int[] BlockQuantities;
-
+    //quantities at the start
     private int[] originalQuantities; 
 
 
@@ -62,6 +64,16 @@ public class LevelManager : MonoBehaviour {
         player.State = PlayerState.Frozen;
         StartCoroutine(ERespawn());
     }
+    /// <summary>
+    /// Completes the level. Cool color effect, then load next level.
+    /// </summary>
+    public void CompleteLevel()
+    {
+        RenderSettings.ambientSkyColor = VictoryLightColor;
+        Camera.main.backgroundColor = VictoryCamColor;
+        player.State = PlayerState.Frozen;
+        StartCoroutine(ECompleteLevel());
+    }
 
     private IEnumerator ERespawn()
     {
@@ -77,5 +89,11 @@ public class LevelManager : MonoBehaviour {
         player.transform.position = player.StartPosition;
         player.State = PlayerState.Controllable;
 
+    }
+
+    private IEnumerator ECompleteLevel()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

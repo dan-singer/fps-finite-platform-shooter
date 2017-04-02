@@ -261,10 +261,15 @@ public class Player : MonoBehaviour
     /// </summary>
     private void UpdatePlaceBlock()
     {
-        BlockPlacer.GetComponent<Renderer>().sharedMaterial = AvailableBlocks[curBlockIndex].GetComponent<Renderer>().sharedMaterial;
+        //Copy over necessary material properties
+        BlockPlacer.GetComponent<Renderer>().sharedMaterial.mainTexture = AvailableBlocks[curBlockIndex].GetComponent<Renderer>().sharedMaterial.mainTexture;
+        BlockPlacer.GetComponent<Renderer>().sharedMaterial.mainTextureScale = AvailableBlocks[curBlockIndex].GetComponent<Renderer>().sharedMaterial.mainTextureScale;
+        //Change mesh
         BlockPlacer.GetComponent<MeshFilter>().sharedMesh = AvailableBlocks[curBlockIndex].GetComponent<MeshFilter>().sharedMesh;
+        //Change scale
         BlockPlacer.transform.localScale = AvailableBlocks[curBlockIndex].transform.localScale;
-        BlockPlacer.transform.rotation = AvailableBlocks[curBlockIndex].transform.rotation;
+        //Change rotation. 
+        //BlockPlacer.transform.rotation = AvailableBlocks[curBlockIndex].transform.rotation 
     }
 
     private void Update()
