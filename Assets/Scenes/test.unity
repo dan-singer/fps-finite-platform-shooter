@@ -255,6 +255,7 @@ MonoBehaviour:
   friction: 100
   StartPosition: {x: 0, y: 0, z: 0}
   State: 0
+  transparentColor: {r: 1, g: 1, b: 1, a: 0.347}
 --- !u!143 &897346777
 CharacterController:
   m_ObjectHideFlags: 0

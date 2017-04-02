@@ -66,6 +66,8 @@ public class Player : MonoBehaviour
 
     private List<GameObject> playerPlacedObjects;
 
+    private LevelManager levelManager;
+    public Color transparentColor;
     /// <summary>
     /// Initialization
     /// </summary>
@@ -82,6 +84,7 @@ public class Player : MonoBehaviour
         originalFriction = friction;
         UpdatePlaceBlock();
         playerPlacedObjects = new List<GameObject>();
+        levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 
         //Set Start Position
         if (StartPosition == Vector3.zero)
@@ -202,18 +205,25 @@ public class Player : MonoBehaviour
         //Modify BlockPlacer height
         BlockPlacer.transform.position = new Vector3(BlockPlacer.position.x, BlockPlacer.position.y + scroll, BlockPlacer.position.z);
 
+        //Switch between material color if can't use block
+        if (levelManager.BlockQuantities[curBlockIndex] <= 0)
+        {
+            BlockPlacer.GetComponent<Renderer>().sharedMaterial.color = Color.black;
+        }
+        else
+        {
+            BlockPlacer.GetComponent<Renderer>().sharedMaterial.color = transparentColor;
 
+        }
 
         if (Input.GetButtonDown("Fire1"))
         {
-            LevelManager l = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
 
-            if (l.BlockQuantities[curBlockIndex] > 0)
+            if (levelManager.BlockQuantities[curBlockIndex] > 0)
             {
                 Block b = Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
                 playerPlacedObjects.Add(b.gameObject); //Keep track of placed objects
-                l.BlockQuantities[curBlockIndex]--;
-
+                levelManager.BlockQuantities[curBlockIndex]--;
             }
         }
 
@@ -268,8 +278,7 @@ public class Player : MonoBehaviour
         BlockPlacer.GetComponent<MeshFilter>().sharedMesh = AvailableBlocks[curBlockIndex].GetComponent<MeshFilter>().sharedMesh;
         //Change scale
         BlockPlacer.transform.localScale = AvailableBlocks[curBlockIndex].transform.localScale;
-        //Change rotation. 
-        //BlockPlacer.transform.rotation = AvailableBlocks[curBlockIndex].transform.rotation 
+
     }
 
     private void Update()
