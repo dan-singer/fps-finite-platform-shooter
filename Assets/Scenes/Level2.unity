@@ -201,7 +201,7 @@ Prefab:
         type: 2}
       propertyPath: AvailableBlocks.Array.data[1]
       value: 
-      objectReference: {fileID: 114388005022627428, guid: 6a712ba678550fc4397d7d55601ff220,
+      objectReference: {fileID: 114129062522922812, guid: 6cd27118989432548826d6e5e6991d57,
         type: 2}
     - target: {fileID: 114132067773724324, guid: 3d66b6ca7177df648a5b249bd247b948,
         type: 2}
@@ -214,6 +214,12 @@ Prefab:
       propertyPath: AvailableBlocks.Array.data[3]
       value: 
       objectReference: {fileID: 114770070046916210, guid: b428044eef2ada749a1de75cc91bbbd4,
+        type: 2}
+    - target: {fileID: 114132067773724324, guid: 3d66b6ca7177df648a5b249bd247b948,
+        type: 2}
+      propertyPath: AvailableBlocks.Array.data[0]
+      value: 
+      objectReference: {fileID: 114388005022627428, guid: 6a712ba678550fc4397d7d55601ff220,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d66b6ca7177df648a5b249bd247b948, type: 2}
