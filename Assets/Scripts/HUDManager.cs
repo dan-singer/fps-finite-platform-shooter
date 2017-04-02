@@ -13,6 +13,8 @@ public class HUDManager : MonoBehaviour {
 
     public Text blockNum;
 
+    public Text controls;
+
     Player p;
 
 	// Use this for initialization
@@ -20,7 +22,8 @@ public class HUDManager : MonoBehaviour {
 
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
         blockType = GameObject.Find("BlockType").GetComponent<Text>();
-        
+        controls = GameObject.Find("ControlsText").GetComponent<Text>();
+
         p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         score = 0;
@@ -32,6 +35,8 @@ public class HUDManager : MonoBehaviour {
         scoreText.text = "Score: " + score;
 
         blockType.text = p.BlocksRemaining+ " " + p.CurrentBlock;
-        
+
+        controls.text = "Press Q or E to switch between blocks.\nUse the scroll wheel to change elevation of blocks.";
+
 	}
 }
