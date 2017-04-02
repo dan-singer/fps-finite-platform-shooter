@@ -8,7 +8,21 @@ public class ScoreManager : MonoBehaviour {
     private int score;
 
     Text text;
+    
+    /* Schrodinger's Thumbs Method
+     public private int void THUMBS(Thumbs t)
+     {
+        if schrodinger's finger : 
+            printLine(Console.Write); 
+        for
+            if i then p
+        quit
 
+        TryCatch(int)" ";
+
+        return (int)" ";
+     }
+    */
 	// Use this for initialization
 	void Start () {
         
