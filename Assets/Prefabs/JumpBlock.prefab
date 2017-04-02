@@ -104,5 +104,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe669b5f5a69714e9c4bfde4c0e1902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Quantity: 0
-  LaunchVelocity: {x: 0, y: 40, z: 0}
+  LaunchVelocity: {x: 0, y: 30, z: 0}

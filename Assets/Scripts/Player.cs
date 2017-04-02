@@ -197,11 +197,13 @@ public class Player : MonoBehaviour
                 velocity.y = JumpYVelocity * Time.deltaTime;
             }
         }
-        if (!controller.isGrounded)
+        else
         {
             //Gravitational Acceleration
             velocity.y += Gravity * Time.deltaTime;
         }
+
+
         //For ice movement, lower friction
         float tempY = velocity.y;
         velocity = Vector3.Lerp(oldVel, velocity, Time.deltaTime * friction);
@@ -276,6 +278,9 @@ public class Player : MonoBehaviour
         //Discard collisions with self
         if (other.name == name)
             return;
+
+        if (!other.isTrigger)
+            velocity.y = 0;
         //Polymorphism to the rescue for CollideActions
         if (other.GetComponent<Block>())
         {
