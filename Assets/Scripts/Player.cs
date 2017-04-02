@@ -291,7 +291,7 @@ public class Player : MonoBehaviour
         }
 
         //When we step on anything that's not a boost block, reset speed to original value
-        if (other.GetComponent<BoostBlock>() == null)
+        if (other.GetComponent<BoostBlock>() == null && other.GetComponent<JumpBlock>() == null && !other.isTrigger)
         {
             MoveSpeed = originalSpeed;
         }
