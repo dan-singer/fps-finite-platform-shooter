@@ -69,6 +69,10 @@ public class Player : MonoBehaviour
     private LevelManager levelManager;
     public Color transparentColor;
 
+    //Audio
+    private AudioSource aud;
+    public AudioClip audNext, audPrev, audDrop, audBad;
+
     /// <summary>
     /// Access the current block
     /// </summary>
@@ -115,6 +119,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        aud = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
         acceleration = Vector3.zero;
         velocity = Vector3.zero;
@@ -198,6 +203,7 @@ public class Player : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 velocity.y = JumpYVelocity * Time.deltaTime;
+                
             }
         }
         else
@@ -231,9 +237,15 @@ public class Player : MonoBehaviour
 
         //Switch Blocks
         if (Input.GetButtonDown("Next"))
+        {
             curBlockIndex++;
+            aud.PlayOneShot(audNext);
+        }
         if (Input.GetButtonDown("Prev"))
+        {
             curBlockIndex--;
+            aud.PlayOneShot(audPrev);
+        }
 
         if (curBlockIndex >= AvailableBlocks.Length)
             curBlockIndex = 0;
@@ -269,6 +281,11 @@ public class Player : MonoBehaviour
                 Block b = Instantiate<Block>(AvailableBlocks[curBlockIndex], BlockPlacer.position, BlockPlacer.rotation);
                 playerPlacedObjects.Add(b.gameObject); //Keep track of placed objects
                 levelManager.BlockQuantities[curBlockIndex]--;
+                aud.PlayOneShot(audDrop);
+            }
+            else
+            {
+                aud.PlayOneShot(audBad);
             }
         }
 

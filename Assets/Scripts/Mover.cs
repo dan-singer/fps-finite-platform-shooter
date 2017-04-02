@@ -13,13 +13,17 @@ public class Mover : MonoBehaviour {
     public Vector3 Velocity;
     public Vector3 RotationalVelocity;
     public Vector3 MaxScale;
+    public AudioClip audClick;
+
 
     public bool generateRandomValues = true;
     public bool loadlevelOnPressed = true;
     private bool pressed = false;
     private float t = 0;
+    private AudioSource aud;
 	// Use this for initialization
 	void Start () {
+        aud = GetComponent<AudioSource>();
         GetComponent<Renderer>().sharedMaterial.color = startColor;
         if (generateRandomValues)
         {
@@ -73,6 +77,7 @@ public class Mover : MonoBehaviour {
         if (!pressed && loadlevelOnPressed)
         {
             pressed = true;
+            aud.PlayOneShot(audClick);
             t = 0;
         }
     }
