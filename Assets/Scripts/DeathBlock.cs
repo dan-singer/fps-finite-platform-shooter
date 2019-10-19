@@ -20,7 +20,7 @@ public class DeathBlock : Block {
     {
         if (animator)
             animator.SetTrigger("Activate");
-        GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>().Respawn();
+        GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>().Respawn(); 
 
     }
 }
