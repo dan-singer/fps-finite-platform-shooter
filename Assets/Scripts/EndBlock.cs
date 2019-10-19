@@ -16,6 +16,6 @@ public class EndBlock : Block {
 
     public override void CollideAction(Player player)
     {
-        GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>().CompleteLevel();
+        GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>().CompleteLevel(); 
     }
 }
