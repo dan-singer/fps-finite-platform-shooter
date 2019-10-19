@@ -17,6 +17,6 @@ public class FanBlock : Block {
     public override void CollideAction(Player player)
     {
         player.velocity *= 0.5f;
-        player.Gravity = Mathf.Abs(player.Gravity);
+        player.Gravity = Mathf.Abs(player.Gravity); 
     }
 }
