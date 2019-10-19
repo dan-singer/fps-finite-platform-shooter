@@ -28,7 +28,7 @@ public class Block : MonoBehaviour {
     /// <param name="player"></param>
     public virtual void CollideExitAction(Player player)
     {
-
+ 
     }
 
 
