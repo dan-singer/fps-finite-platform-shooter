@@ -30,5 +30,5 @@ public class KeyValue<K,V> {
 
 [System.Serializable]
 public class StringInt : KeyValue<string, int>
-{
+{ 
 }
