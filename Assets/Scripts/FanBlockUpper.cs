@@ -20,7 +20,7 @@ public class FanBlockUpper : Block
     public override void CollideAction(Player player)
     {
         //player.velocity = Vector3.zero;
-        player.Gravity = -Mathf.Abs(player.Gravity);
+        player.Gravity = -Mathf.Abs(player.Gravity); 
     }
 
 }
