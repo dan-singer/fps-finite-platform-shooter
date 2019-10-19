@@ -21,6 +21,6 @@ public class JumpBlock : Block {
 
     public override void CollideAction(Player player)
     {
-        player.velocity += LaunchVelocity * Time.deltaTime;
+        player.velocity += LaunchVelocity * Time.deltaTime; 
     }
 }
